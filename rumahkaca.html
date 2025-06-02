@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring Rumah Kaca</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    h1 {
+      color: #2c3e50;
+    }
+
+    .data-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .control-btns button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .on {
+      background-color: #27ae60;
+      color: #fff;
+    }
+
+    .off {
+      background-color: #c0392b;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Dashboard Monitoring Rumah Kaca</h1>
+
+  <div class="data-box">
+    <p><span class="label">Suhu:</span> <span id="suhu">0</span> &deg;C</p>
+    <p><span class="label">Kelembaban Udara:</span> <span id="kelembaban_udara">0</span> %</p>
+    <p><span class="label">Kelembaban Tanah:</span> <span id="kelembaban_tanah">0</span></p>
+    <p><span class="label">Cahaya:</span> <span id="cahaya">0</span></p>
+  </div>
+
+  <div class="data-box">
+    <h3>Kontrol Manual</h3>
+    <div class="control-btns">
+      <p>Kipas:
+        <button class="on" onclick="setControl('kipas', true)">ON</button>
+        <button class="off" onclick="setControl('kipas', false)">OFF</button>
+      </p>
+      <p>Pompa:
+        <button class="on" onclick="setControl('pompa', true)">ON</button>
+        <button class="off" onclick="setControl('pompa', false)">OFF</button>
+      </p>
+      <p>Lampu:
+        <button class="on" onclick="setControl('lampu', true)">ON</button>
+        <button class="off" onclick="setControl('lampu', false)">OFF</button>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Ganti sesuai konfigurasi Firebase Anda
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
+      authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
+      databaseURL: "https://otomatisasi-rumah-kaca-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "otomatisasi-rumah-kaca",
+      storageBucket: "otomatisasi-rumah-kaca.firebasestorage.app",
+      messagingSenderId: "700746703077",
+      appId: "1:700746703077:web:855779cda73025835e340c",
+      measurementId: "G-QN9R8DB19P"
+    };
+  
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Update tampilan data sensor secara realtime
+    const updateElement = (id, path) => {
+      db.ref(path).on('value', snapshot => {
+        document.getElementById(id).innerText = snapshot.val();
+      });
+    }
+
+    updateElement("suhu", "/rumahKaca/suhu");
+    updateElement("kelembaban_udara", "/rumahKaca/kelembaban_udara");
+    updateElement("kelembaban_tanah", "/rumahKaca/kelembaban_tanah");
+    updateElement("cahaya", "/rumahKaca/cahaya");
+
+    // Fungsi kontrol manual
+    function setControl(device, status) {
+      db.ref(`/kontrolManual/${device}`).set(status);
+    }
+  </script>
+</body>
+
+</html>
