@@ -91,10 +91,10 @@
       appId: "1:700746703077:web:855779cda73025835e340c",
       measurementId: "G-QN9R8DB19P"
     };
-  
-    // Inisialisasi Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
 
     // Update tampilan data sensor secara realtime
     const updateElement = (id, path) => {

@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "otomatisasi-rumah-kaca",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
