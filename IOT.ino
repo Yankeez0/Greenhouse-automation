@@ -3,7 +3,7 @@
 #include <Firebase_ESP_Client.h>
 
 // ----------------------------
-// KONFIGURASI
+// KONFIGURASII
 // ----------------------------
 #define WIFI_SSID ""
 #define WIFI_PASSWORD ""
