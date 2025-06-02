@@ -11,4 +11,3 @@ Proyek ini adalah sistem monitoring dan kontrol otomatis untuk rumah kaca menggu
   - Lampu (berdasarkan intensitas cahaya)
 - Kirim & baca data secara real-time ke/dari Firebase
 - Dashboard Web untuk monitoring dan kontrol perangkat secara langsung
-
