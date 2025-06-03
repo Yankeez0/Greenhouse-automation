@@ -1,89 +1,118 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/11.8.1/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.8.1/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.8.1/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitoring Rumah Kaca</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    h1 {
+      color: #2c3e50;
+    }
+
+    .data-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .control-btns button {
+      margin-right: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .on {
+      background-color: #27ae60;
+      color: #fff;
+    }
+
+    .off {
+      background-color: #c0392b;
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Dashboard Monitoring Rumah Kaca</h1>
+
+  <div class="data-box">
+    <p><span class="label">Suhu:</span> <span id="suhu">0</span> &deg;C</p>
+    <p><span class="label">Kelembaban Udara:</span> <span id="kelembaban_udara">0</span> %</p>
+    <p><span class="label">Kelembaban Tanah:</span> <span id="kelembaban_tanah">0</span></p>
+    <p><span class="label">Cahaya:</span> <span id="cahaya">0</span></p>
+  </div>
+
+  <div class="data-box">
+    <h3>Kontrol Manual</h3>
+    <div class="control-btns">
+      <p>Kipas:
+        <button class="on" onclick="setControl('kipas', true)">ON</button>
+        <button class="off" onclick="setControl('kipas', false)">OFF</button>
+      </p>
+      <p>Pompa:
+        <button class="on" onclick="setControl('pompa', true)">ON</button>
+        <button class="off" onclick="setControl('pompa', false)">OFF</button>
+      </p>
+      <p>Lampu:
+        <button class="on" onclick="setControl('lampu', true)">ON</button>
+        <button class="off" onclick="setControl('lampu', false)">OFF</button>
+      </p>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+  </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  <script>
+    // Ganti sesuai konfigurasi Firebase Anda
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
+      authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
+      databaseURL: "https://otomatisasi-rumah-kaca-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "otomatisasi-rumah-kaca",
+      storageBucket: "otomatisasi-rumah-kaca.firebasestorage.app",
+      messagingSenderId: "700746703077",
+      appId: "1:700746703077:web:855779cda73025835e340c",
+      measurementId: "G-QN9R8DB19P"
+    };
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    // Update tampilan data sensor secara realtime
+    const updateElement = (id, path) => {
+      db.ref(path).on('value', snapshot => {
+        document.getElementById(id).innerText = snapshot.val();
       });
-    </script>
-  </body>
+    }
+
+    updateElement("suhu", "/rumahKaca/suhu");
+    updateElement("kelembaban_udara", "/rumahKaca/kelembaban_udara");
+    updateElement("kelembaban_tanah", "/rumahKaca/kelembaban_tanah");
+    updateElement("cahaya", "/rumahKaca/cahaya");
+    //mak pengen modify git aja
+    // Fungsi kontrol manual
+    function setControl(device, status) {
+      db.ref(`/kontrolManual/${device}`).set(status);
+    }
+  </script>
+</body>
+
 </html>
