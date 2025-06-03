@@ -11,3 +11,23 @@ Proyek ini adalah tugas mata kuliah Sistem digital dengan judul "sistem monitori
   - Lampu (berdasarkan intensitas cahaya)
 - Kirim & baca data secara real-time ke/dari Firebase
 - Dashboard Web untuk monitoring dan kontrol perangkat secara langsung
+
+## Teknologi yang digunakan
+- HTML
+- Firebase
+Kontroler:
+- ESP32
+- DHT22
+- Potensiometer
+- LDR
+Output:
+-LED
+
+# Dosen Pengampu: Radzi Rathomi S.Kom, M.Cs.
+# Mata Kuliah: Sistem Digital
+
+## Anggota Kelompok:
+- Yudha Rifal Kelana (2301020122)
+- Rahmat Ramadhan
+- Raja Olivia Erika
+
