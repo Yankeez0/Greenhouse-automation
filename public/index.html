@@ -1,49 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<script>
-  // Ganti sesuai konfigurasi Firebase Anda
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
-    authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
-    databaseURL: "https://otomatisasi-rumah-kaca-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "otomatisasi-rumah-kaca",
-    storageBucket: "otomatisasi-rumah-kaca.firebasestorage.app",
-    messagingSenderId: "700746703077",
-    appId: "1:700746703077:web:855779cda73025835e340c",
-    measurementId: "G-QN9R8DB19P"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const analytics = getAnalytics(app);
-
-  // Update tampilan data sensor secara realtime
-  const updateElement = (id, path) => {
-    db.ref(path).on('value', snapshot => {
-      document.getElementById(id).innerText = snapshot.val();
-    });
-  }
-
-  updateElement("suhu", "/rumahkaca/suhu");
-  updateElement("kelembaban_udara", "/rumahkaca/kelembaban_udara");
-  updateElement("kelembaban_tanah", "/rumahkaca/kelembaban_tanah");
-  updateElement("cahaya", "/rumahkaca/cahaya");
-  // Fungsi kontrol manual
-  function setControl(device, status) {
-    db.ref(`/kontrolManual/${device}`).set(status);
-  }
-</script>
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monitoring Rumah Kaca</title>
+
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -114,6 +79,41 @@
       </p>
     </div>
   </div>
-</body>
 
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
+      authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
+      databaseURL: "https://otomatisasi-rumah-kaca-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "otomatisasi-rumah-kaca",
+      storageBucket: "otomatisasi-rumah-kaca.firebasestorage.app",
+      messagingSenderId: "700746703077",
+      appId: "1:700746703077:web:855779cda73025835e340c",
+      measurementId: "G-QN9R8DB19P"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Fungsi untuk memperbarui elemen tampilan data
+    const updateElement = (id, path) => {
+      db.ref(path).on('value', snapshot => {
+        document.getElementById(id).innerText = snapshot.val();
+      });
+    }
+
+    // Mapping data Firebase ke elemen HTML (cocok dengan struktur Anda)
+    updateElement("suhu", "/rumahkaca/suhu");
+    updateElement("kelembaban_udara", "/rumahkaca/kelembaban_udara");
+    updateElement("kelembaban_tanah", "/rumahkaca/kelembaban_tanah");
+    updateElement("cahaya", "/rumahkaca/cahaya");
+
+    // Fungsi untuk kontrol manual
+    function setControl(device, status) {
+      db.ref(`/kontrolManual/${device}`).set(status);
+    }
+  </script>
+</body>
 </html>
