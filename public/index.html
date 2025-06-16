@@ -32,22 +32,24 @@
       font-weight: bold;
     }
 
-    .control-btns button {
-      margin-right: 10px;
-      padding: 10px 15px;
+    .status-button {
+      padding: 10px 20px;
       border: none;
       border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.2s ease;
       cursor: pointer;
     }
 
-    .on {
+    .status-button.on {
       background-color: #27ae60;
-      color: #fff;
+      transform: scale(1.05);
     }
 
-    .off {
+    .status-button.off {
       background-color: #c0392b;
-      color: #fff;
+      transform: scale(1);
     }
   </style>
 </head>
@@ -63,25 +65,15 @@
   </div>
 
   <div class="data-box">
-    <h3>Kontrol Manual</h3>
-    <div class="control-btns">
-      <p>Kipas:
-        <button class="on" onclick="setControl('kipas', true)">ON</button>
-        <button class="off" onclick="setControl('kipas', false)">OFF</button>
-      </p>
-      <p>Pompa:
-        <button class="on" onclick="setControl('pompa', true)">ON</button>
-        <button class="off" onclick="setControl('pompa', false)">OFF</button>
-      </p>
-      <p>Lampu:
-        <button class="on" onclick="setControl('lampu', true)">ON</button>
-        <button class="off" onclick="setControl('lampu', false)">OFF</button>
-      </p>
-    </div>
+    <h3>Kontrol Manual Lampu</h3>
+    <p>
+      Lampu:
+      <button id="btn-lampu" class="status-button" onclick="setControl('lampu', !statusLampu)">Tunggu...</button>
+    </p>
   </div>
 
   <script>
-    // Firebase configuration
+    // Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
       authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
@@ -93,24 +85,37 @@
       measurementId: "G-QN9R8DB19P"
     };
 
-    // Initialize Firebase
+    // Inisialisasi Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // Fungsi untuk memperbarui elemen tampilan data
+    // Menampilkan data sensor realtime
     const updateElement = (id, path) => {
       db.ref(path).on('value', snapshot => {
         document.getElementById(id).innerText = snapshot.val();
       });
-    }
+    };
 
-    // Mapping data Firebase ke elemen HTML (cocok dengan struktur Anda)
     updateElement("suhu", "/rumahkaca/suhu");
     updateElement("kelembaban_udara", "/rumahkaca/kelembaban_udara");
     updateElement("kelembaban_tanah", "/rumahkaca/kelembaban_tanah");
     updateElement("cahaya", "/rumahkaca/cahaya");
 
-    // Fungsi untuk kontrol manual
+    // Kontrol lampu
+    let statusLampu = false;
+
+    function updateButton(id, state) {
+      const el = document.getElementById(id);
+      el.classList.remove('on', 'off');
+      el.classList.add(state ? 'on' : 'off');
+      el.innerText = state ? "ON" : "OFF";
+    }
+
+    db.ref("/kontrolManual/lampu").on("value", snapshot => {
+      statusLampu = snapshot.val();
+      updateButton("btn-lampu", statusLampu);
+    });
+
     function setControl(device, status) {
       db.ref(`/kontrolManual/${device}`).set(status);
     }
