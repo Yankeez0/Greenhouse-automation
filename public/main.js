@@ -1,4 +1,4 @@
-// 🔧 Konfigurasi Firebase
+// Konfigurasi Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCKZJ2TpvHyescHOo5HHfRcI9FOCL2aRWA",
   authDomain: "otomatisasi-rumah-kaca.firebaseapp.com",
@@ -10,25 +10,29 @@ const firebaseConfig = {
   measurementId: "G-QN9R8DB19P"
 };
 
-// 🚀 Inisialisasi Firebase
+// Inisialisasi Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// 🔁 Tampilkan data sensor ke tampilan
+// Fungsi untuk update tampilan data sensor
 function updateElement(id, path) {
   db.ref(path).on("value", snapshot => {
     document.getElementById(id).innerText = snapshot.val();
   });
 }
 
+// Tampilkan data sensor
 updateElement("suhu", "/rumahkaca/suhu");
 updateElement("kelembaban_udara", "/rumahkaca/kelembaban_udara");
 updateElement("kelembaban_tanah", "/rumahkaca/kelembaban_tanah");
 updateElement("cahaya", "/rumahkaca/cahaya");
 
-// ⚡ Kontrol lampu
+// Status perangkat
 let statusLampu = false;
+let statusKipas = false;
+let statusPompa = false;
 
+// Fungsi pembaruan tampilan tombol
 function updateButton(id, state) {
   const el = document.getElementById(id);
   el.classList.remove("on", "off");
@@ -36,11 +40,23 @@ function updateButton(id, state) {
   el.innerText = state ? "ON" : "OFF";
 }
 
+// Pantau perubahan status perangkat dari Firebase
 db.ref("/kontrolManual/lampu").on("value", snapshot => {
   statusLampu = snapshot.val();
   updateButton("btn-lampu", statusLampu);
 });
 
+db.ref("/kontrolManual/kipas").on("value", snapshot => {
+  statusKipas = snapshot.val();
+  updateButton("btn-kipas", statusKipas);
+});
+
+db.ref("/kontrolManual/pompa").on("value", snapshot => {
+  statusPompa = snapshot.val();
+  updateButton("btn-pompa", statusPompa);
+});
+
+// Fungsi untuk mengirim status ON/OFF
 function setControl(device, state) {
   db.ref(`/kontrolManual/${device}`).set(state);
 }
