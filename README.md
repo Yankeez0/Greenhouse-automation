@@ -28,6 +28,6 @@ Output:
 
 ## Anggota Kelompok:
 - Yudha Rifal Kelana (2301020122)
-- Rahmat Ramadhan
-- Raja Olivia Erika
+- Rahmat Ramadhan (2301020032)
+- Raja Olivia Erika (2301020029)
 
