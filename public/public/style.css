@@ -1,0 +1,58 @@
+body { 
+  font-family: Arial, sans-serif; 
+  background: #f4f4f4; 
+  padding: 20px; 
+  /* Mencegah scroll di body jika tidak perlu */
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Kontainer untuk flexbox */
+.dashboard-container {
+  display: flex;
+  gap: 20px; /* Jarak antar box */
+  flex-wrap: wrap; /* Izinkan box turun baris jika layar sempit */
+  height: calc(100vh - 120px); /* Sesuaikan tinggi agar muat di layar */
+}
+
+.data-box { 
+  background: #fff; 
+  border-radius: 10px; 
+  padding: 20px; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  
+  /* Menghapus margin-bottom dan menambahkan flex */
+  flex: 1; /* Biarkan setiap box tumbuh mengisi ruang yang tersedia */
+  min-width: 250px; /* Lebar minimum sebelum turun baris */
+  display: flex;
+  flex-direction: column;
+}
+
+.label { 
+  font-weight: bold; 
+}
+
+.status-button {
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px;
+  font-weight: bold; 
+  color: white; 
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.status-button.on { 
+  background-color: #27ae60; 
+  transform: scale(1.05); 
+}
+
+.status-button.off { 
+  background-color: #c0392b; 
+}

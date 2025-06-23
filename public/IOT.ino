@@ -59,7 +59,7 @@ void loop() {
   bool modeOtomatis = Firebase.getBool(fbdo, "/modeOtomatis");
 
   if (modeOtomatis) {
-    // Logika otomatis
+    // 🔁 Logika otomatis
     bool kipas = suhu > 35;
     bool lampu = intensitasCahaya < 30;       // 0 sangat gelap, 100 sangat terang
     bool pompa = kelembabanTanahPersen < 40;
@@ -72,7 +72,7 @@ void loop() {
     Firebase.setBool(fbdo, "/kontrolManual/lampu", lampu);
     Firebase.setBool(fbdo, "/kontrolManual/pompa", pompa);
   } else {
-    // Manual kontrol dari web
+    // 🎮 Manual kontrol dari web
     bool kipas = Firebase.getBool(fbdo, "/kontrolManual/kipas");
     bool lampu = Firebase.getBool(fbdo, "/kontrolManual/lampu");
     bool pompa = Firebase.getBool(fbdo, "/kontrolManual/pompa");
